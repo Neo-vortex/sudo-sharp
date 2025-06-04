@@ -3,6 +3,13 @@
 A minimal Linux utility built in **.NET 9** that launches a shell or specified binary with elevated root privileges. It leverages **Ahead-of-Time (AOT)** compilation to produce a single native executable. The build process is fully containerized for consistency and simplicity.
 
 ---
+## ✨ Why This Project?
+
+I recently read that Ubuntu 25.10 is moving to a Rust-based sudo, and thought: "Let's review what I know about Linux and rewrite sudo in C#!" — and so this project was born.
+
+
+
+---
 
 ## 🚀 Features
 
@@ -11,6 +18,7 @@ A minimal Linux utility built in **.NET 9** that launches a shell or specified b
 - 🐳 **Docker-based build process** for portability
 - 📂 **Single native binary output** with no runtime dependency on .NET
 - 🔧 Optionally run any binary or script as root
+- 🔧 Runs ```bash``` or ```sh``` by defualt
 
 ---
 
@@ -30,6 +38,7 @@ This will:
 - Apply `setuid` root permission if run with `sudo`
 
 ---
+
 
 ## 🧪 Usage
 
@@ -71,7 +80,7 @@ To run a specific binary:
 ## 📝 TODO
 
 - [ ] Add sudoers-like authentication or integrate with system sudoers for secure access control
-
+- [ ] Add various args for better control
 ---
 
 ## 📄 License
