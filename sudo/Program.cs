@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 partial class Program
@@ -15,21 +14,8 @@ partial class Program
 
     static async Task Main(string[] args)
     {
-        var getuidResult = getuid();
-        var geteuidResult = geteuid();
-
-        if (geteuidResult != 0)
-        {
-            var setuidResult = setuid(0);
-            if (setuidResult != 0 || geteuid() != 0)
-            {
-                await Console.Error.WriteLineAsync("❌ Failed to escalate privileges to root.");
-                await Console.Error.WriteLineAsync($"   UID: {getuidResult}, EUID: {geteuidResult}, setuid(0) returned {setuidResult}");
-                Environment.Exit(1);
-            }
-        }
-        setuid(0);
-        var fileToExecute = args.Length > 0 ? args[0] : "/bin/bash";
+        await CheckPermission();
+        var fileToExecute = args.Length > 0 ? args[0] : GetDefaultShell();
         var arguments = args.Length > 1 ? string.Join(" ", args[1..]) : "";
         var startInfo = new ProcessStartInfo
         {
@@ -52,4 +38,33 @@ partial class Program
             Console.WriteLine($"Error: {ex.Message}");
         }
     }
+
+    private static string GetDefaultShell()
+    {
+        const string bashPath = "/bin/bash";
+        const string shPath = "/bin/sh";
+        
+        if (File.Exists(bashPath))
+            return bashPath;
+        
+        if (File.Exists(shPath))
+            return shPath;
+            
+        throw new Exception("Neither /bin/bash nor /bin/sh were found");
+    }
+
+    private static async Task CheckPermission()
+    {
+        var getuidResult = getuid();
+        var geteuidResult = geteuid();
+        if (geteuidResult == 0) return;
+        var setuidResult = setuid(0);
+        if (setuidResult != 0 || geteuid() != 0)
+        {
+            await Console.Error.WriteLineAsync("❌ Failed to escalate privileges to root.");
+            await Console.Error.WriteLineAsync($"UID: {getuidResult}, EUID: {geteuidResult}, setuid(0) returned {setuidResult}");
+            Environment.Exit(1);
+        }
+    }
+
 }
