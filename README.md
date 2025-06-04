@@ -39,6 +39,33 @@ This will:
 
 ---
 
+## 📦 Final Binary Info
+
+### Dependencies (checked with `ldd ./sudo`):
+
+```
+linux-vdso.so.1 (0x00007ffc4d9fc000)
+libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x000077c58d910000)
+libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000077c58d200000)
+/lib64/ld-linux-x86-64.so.2 (0x000077c58da1c000)
+```
+
+### File size comparison:
+
+- Final native AOT binary size:
+
+```bash
+du ./sudo -h
+2.3M	./sudo
+```
+
+- Native system sudo binary size:
+
+```bash
+du /usr/bin/sudo -h
+272K	/usr/bin/sudo
+```
+---
 
 ## 🧪 Usage
 
