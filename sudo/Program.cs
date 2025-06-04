@@ -1,17 +1,18 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-class Program
+namespace sudo;
+
+internal static partial class Program
 {
-    [DllImport("libc", SetLastError = true)]
-    private static extern uint getuid();
+    [LibraryImport("libc", SetLastError = true)]
+    private static partial uint getuid();
 
-    [DllImport("libc", SetLastError = true)]
-    private static extern uint geteuid();
+    [LibraryImport("libc", SetLastError = true)]
+    private static partial uint geteuid();
 
-    [DllImport("libc", SetLastError = true)]
-    private static extern int setuid(uint uid);
+    [LibraryImport("libc", SetLastError = true)]
+    private static partial int setuid(uint uid);
     static async Task Main(string[] args)
     {
         setuid(0);
